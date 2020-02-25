@@ -27,7 +27,7 @@ class BasePage:
     def find_by_id(self, value = ""):
         return self.driver.find_element(by=By.ID, value=value)
 
-    def funcfind_by_name(self, value = ""):
+    def find_by_name(self, value = ""):
         return self.driver.find_element(by=By.NAME, value=value)
 
     def find_by_xpath(self, value = ""):
