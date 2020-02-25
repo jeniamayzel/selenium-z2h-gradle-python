@@ -1,0 +1,32 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+plugins {
+  //id "com.linkedin.python-sdist" version "0.9.11"
+  id 'ru.vyarus.use-python' version '1.2.0'
+}
+
+python {
+    pip 'requests:2.9.1'
+    pip 'selenium:3.141.0'
+    pip 'pyyaml:5.3'
+    pip 'html-testRunner:1.2.1'
+}
+
+task build(type:Exec, dependsOn: 'pipInstall'){
+    outputs.dir "dist"
+    outputs.dir "build"
+    workingDir '.'
+    commandLine "python", "setup.py"
+    args "sdist","bdist_wheel"
+    standardOutput = new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+}
+
+task clean(type: Delete){
+    delete 'dist', 'build'
+    file('.').listFiles().each {
+      if( it.name.endsWith("egg-info" ) ) delete it
+      }
+    followSymlinks = true
+}
